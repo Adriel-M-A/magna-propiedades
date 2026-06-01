@@ -1,0 +1,186 @@
+[
+  {
+    "id": "alquiler-casa-cangallo-232",
+    "disponible": true,
+    "destacada": true,
+    "fecha_carga": "2026-05-28",
+    "operacion": "alquiler",
+    "tipo": "casa",
+    "titulo": "Casa en Planta Baja - Barrio Juan Manuel de Rosas",
+    "direccion": "Cangallo 232",
+    "ciudad": "Trelew",
+    "barrio": "Juan Manuel de Rosas",
+    "caracteristicas_criticas": {
+      "dormitorios": 3,
+      "banos": 1,
+      "superficie_m2": null
+    },
+    "comodidades_destacadas": [
+      "Placares empotrados",
+      "Patio amplio",
+      "Entrada de vehículo"
+    ],
+    "descripcion_general": "Living-comedor y cocina anexada en concepto abierto. Ideal para familias que buscan comodidad y amplios espacios en un barrio tranquilo.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa la casa en alquiler de calle Cangallo 232"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  },
+  {
+    "id": "venta-departamento-san-martin-450",
+    "disponible": true,
+    "destacada": true,
+    "fecha_carga": "2026-05-25",
+    "operacion": "venta",
+    "tipo": "departamento",
+    "titulo": "Departamento 2 Ambientes - Centro",
+    "direccion": "San Martín 450, 3° Piso",
+    "ciudad": "Trelew",
+    "barrio": "Centro",
+    "caracteristicas_criticas": {
+      "dormitorios": 1,
+      "banos": 1,
+      "superficie_m2": 52
+    },
+    "comodidades_destacadas": [
+      "Balcón con vista",
+      "Calefacción central",
+      "Edificio con ascensor"
+    ],
+    "descripcion_general": "Departamento luminoso ubicado en el corazón de la ciudad. Excelente estado de conservación, ideal para profesional o pareja.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa el departamento en venta de San Martín 450"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  },
+  {
+    "id": "alquiler-local-mitre-120",
+    "disponible": true,
+    "fecha_carga": "2026-05-20",
+    "operacion": "alquiler",
+    "tipo": "local",
+    "titulo": "Local Comercial - Zona Peatonal",
+    "direccion": "Mitre 120",
+    "ciudad": "Trelew",
+    "barrio": "Microcentro",
+    "caracteristicas_criticas": {
+      "dormitorios": null,
+      "banos": 1,
+      "superficie_m2": 75
+    },
+    "comodidades_destacadas": [
+      "Frente de vidrio",
+      "Depósito trasero",
+      "Alta circulación peatonal"
+    ],
+    "descripcion_general": "Local a pie de calle en la zona de mayor tránsito comercial de la ciudad. Ideal para comercio minorista, gastronomía o servicios.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa el local comercial en alquiler de calle Mitre 120"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  },
+  {
+    "id": "venta-casa-rawson-belgrano-890",
+    "disponible": true,
+    "destacada": true,
+    "fecha_carga": "2026-05-15",
+    "operacion": "venta",
+    "tipo": "casa",
+    "titulo": "Casa Familiar con Patio - Rawson",
+    "direccion": "Belgrano 890",
+    "ciudad": "Rawson",
+    "barrio": "Residencial Sur",
+    "caracteristicas_criticas": {
+      "dormitorios": 4,
+      "banos": 2,
+      "superficie_m2": 180
+    },
+    "comodidades_destacadas": [
+      "Cochera doble",
+      "Jardín con parrilla",
+      "Lavadero independiente",
+      "Dormitorio en suite"
+    ],
+    "descripcion_general": "Amplia residencia familiar con distribución en planta baja y planta alta. Excelente iluminación natural en todos los ambientes. A metros de escuelas y comercios.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa la casa en venta de calle Belgrano 890 en Rawson"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  },
+  {
+    "id": "alquiler-departamento-colon-300",
+    "disponible": true,
+    "fecha_carga": "2026-05-10",
+    "operacion": "alquiler",
+    "tipo": "departamento",
+    "titulo": "Monoambiente Equipado - Céntrico",
+    "direccion": "Colón 300, 1° Piso",
+    "ciudad": "Trelew",
+    "barrio": "Centro",
+    "caracteristicas_criticas": {
+      "dormitorios": 1,
+      "banos": 1,
+      "superficie_m2": 38
+    },
+    "comodidades_destacadas": [
+      "Amoblado",
+      "Aire acondicionado",
+      "Internet incluido"
+    ],
+    "descripcion_general": "Monoambiente moderno y completamente equipado. Ideal para estudiantes o profesionales que buscan comodidad sin complicaciones. Excelente ubicación con todos los servicios a la vuelta.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa el monoambiente en alquiler de Colón 300"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  },
+  {
+    "id": "venta-local-puerto-madryn-rivadavia-55",
+    "disponible": true,
+    "fecha_carga": "2026-05-05",
+    "operacion": "venta",
+    "tipo": "local",
+    "titulo": "Local con Depósito - Puerto Madryn",
+    "direccion": "Rivadavia 55",
+    "ciudad": "Puerto Madryn",
+    "barrio": "Centro",
+    "caracteristicas_criticas": {
+      "dormitorios": null,
+      "banos": 2,
+      "superficie_m2": 120
+    },
+    "comodidades_destacadas": [
+      "Amplio depósito",
+      "Salida a dos calles",
+      "Planta alta habitable"
+    ],
+    "descripcion_general": "Oportunidad de inversión en zona de alto valor comercial. El inmueble cuenta con dos plantas: planta baja para comercio y planta alta con posibilidad de uso habitacional u oficinas.",
+    "contacto": {
+      "telefono": "0000000000",
+      "mensaje_whatsapp": "Hola, me interesa el local en venta de Rivadavia 55 en Puerto Madryn"
+    },
+    "imagenes": {
+      "principal": null,
+      "galeria": []
+    }
+  }
+]

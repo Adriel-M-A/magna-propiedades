@@ -1,0 +1,74 @@
+---
+// ServicesProfessionals.astro - Componente premium para los servicios inmobiliarios core
+---
+
+<section id="servicios" class="py-16 bg-white">
+  <div class="container-main">
+    <!-- Encabezado de la Sección -->
+    <div class="text-center mb-12 max-w-2xl mx-auto flex flex-col items-center gap-3 animate-fadeInUp">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-sage/10 text-brand-sage uppercase tracking-wider">
+        Nuestra Experiencia
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold font-serif text-brand-dark leading-tight">
+        Nuestros Servicios Profesionales
+      </h2>
+      <div class="w-12 h-0.5 bg-brand-sage/40 rounded-full my-1"></div>
+      <p class="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">
+        Ofrecemos un respaldo técnico y comercial completo para que tu experiencia en el mercado inmobiliario sea transparente, segura y exitosa.
+      </p>
+    </div>
+
+    <!-- Grilla de 3 Columnas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Tarjeta 1: Tasación -->
+      <div class="bg-brand-cream p-8 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center gap-4 animate-fadeInUp delay-100">
+        <div class="w-14 h-14 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage mb-2">
+          <!-- Icono de Tasación (Regla/Ruler) -->
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22v-4"/>
+            <path d="M12 14V4"/>
+            <path d="M16 8h-4"/>
+            <path d="M16 12h-4"/>
+            <path d="M16 16h-4"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-serif font-bold text-brand-dark">Tasación</h3>
+        <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
+          Valuaciones precisas y profesionales basadas en el mercado actual para asegurar el mejor valor de su propiedad.
+        </p>
+      </div>
+
+      <!-- Tarjeta 2: Administración -->
+      <div class="bg-brand-cream p-8 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center gap-4 animate-fadeInUp delay-200">
+        <div class="w-14 h-14 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage mb-2">
+          <!-- Icono de Administración (Llaves / Home) -->
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-serif font-bold text-brand-dark">Administración</h3>
+        <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
+          Gestión integral de alquileres, asegurando el cumplimiento de pagos y el mantenimiento óptimo del inmueble.
+        </p>
+      </div>
+
+      <!-- Tarjeta 3: Confección de Contratos -->
+      <div class="bg-brand-cream p-8 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center gap-4 animate-fadeInUp delay-300">
+        <div class="w-14 h-14 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage mb-2">
+          <!-- Icono de Contratos (Documento firmado) -->
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <path d="M12 18H8"/>
+            <path d="M16 14H8"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-serif font-bold text-brand-dark">Confección de contratos</h3>
+        <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
+          Asesoría legal y técnica para la redacción de contratos seguros y transparentes para todas las partes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

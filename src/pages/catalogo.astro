@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import FilterBar from '../components/FilterBar.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import ServicesIntegrales from '../components/ServicesIntegrales.astro';
+import Footer from '../components/Footer.astro';
+import type { Propiedad } from '../components/PropertyCard.astro';
+
+import propiedadesRaw from '../data/propiedades.json';
+
+// Cargar todas las propiedades disponibles del JSON (servidor)
+const propiedades: Propiedad[] = (propiedadesRaw as Propiedad[])
+  .filter((p) => p.disponible)
+  .sort((a, b) => new Date(b.fecha_carga).getTime() - new Date(a.fecha_carga).getTime());
+---
+
+<Layout
+  title="Catálogo Inmobiliario Completo | Magna Propiedades"
+  description="Explore nuestra selecta cartera de casas, departamentos y locales comerciales en Chubut. Búsqueda y filtrado interactivo en Patagonia."
+>
+  <!-- Cabecera Sticky Glassmorphic -->
+  <Header />
+
+  <main class="py-12 bg-brand-cream/10">
+    <div class="container-main flex flex-col gap-8">
+      
+      <!-- Título de Sección de Lujo (Fiel al Mockup 2) -->
+      <div class="flex flex-col gap-3 animate-fadeInUp">
+        <h1 class="text-3xl sm:text-4.5xl font-bold font-serif text-brand-dark leading-tight">
+          Nuestro Catálogo
+        </h1>
+        <p class="text-xs sm:text-sm text-brand-dark/70 max-w-xl leading-relaxed">
+          Descubra una colección curada de propiedades exclusivas diseñadas para elevar su estilo de vida y potenciar sus inversiones comerciales en la región.
+        </p>
+      </div>
+
+      <!-- Barra de Filtros Avanzados (Min/Max + Selectores) -->
+      <FilterBar />
+
+      <!-- Contador de Resultados Dinámico -->
+      <div class="text-xs text-brand-dark/50 font-semibold select-none animate-fadeIn pl-1" id="results-count" aria-live="polite">
+        Mostrando <span id="results-number" class="text-brand-sage font-bold">{propiedades.length}</span> propiedades en catálogo
+      </div>
+
+      <!-- Grilla de Propiedades Core (1 col en móvil, 3 o 4 en escritorio) -->
+      <div 
+        id="catalog-grid" 
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fadeInUp delay-100"
+        aria-label="Listado de propiedades"
+      >
+        {propiedades.map((p, i) => (
+          <PropertyCard propiedad={p} index={i} />
+        ))}
+      </div>
+
+      <!-- Estado: Sin Resultados -->
+      <div 
+        id="no-results-state" 
+        class="hidden flex-col items-center justify-center text-center py-16 px-4 bg-white border border-dashed border-brand-sand rounded-2xl gap-4 select-none max-w-md mx-auto w-full animate-fadeIn"
+        aria-live="polite"
+      >
+        <svg class="w-12 h-12 text-brand-sage opacity-50 stroke-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+        </svg>
+        <div class="flex flex-col gap-1">
+          <h3 class="text-sm font-bold font-serif text-brand-dark">Sin propiedades coincidentes</h3>
+          <p class="text-xs text-brand-dark/60 max-w-[28ch] mx-auto leading-relaxed">
+            No encontramos inmuebles activos que coincidan exactamente con tu búsqueda.
+          </p>
+        </div>
+        <button 
+          id="btn-limpiar-filtros"
+          type="button" 
+          class="btn btn-outline py-2 px-5 text-xs font-bold uppercase tracking-wider rounded-lg border border-brand-sand text-brand-dark hover:bg-brand-sand transition-all cursor-pointer"
+        >
+          Limpiar Filtros
+        </button>
+      </div>
+
+      <!-- Botón Táctil: Cargar Más Propiedades (Visual Fiel a Mockup 2) -->
+      <div class="flex flex-col items-center gap-2 mt-4 select-none animate-fadeInUp delay-200">
+        <span class="text-[10px] font-bold text-brand-sage uppercase tracking-widest">
+          Cargar Más Propiedades
+        </span>
+        <button 
+          id="btn-cargar-mas"
+          type="button"
+          class="w-10 h-10 rounded-full border border-brand-sand hover:border-brand-sage hover:bg-white text-brand-dark hover:text-brand-sage flex items-center justify-center shadow-sm cursor-pointer transition-all bg-brand-cream/50"
+          aria-label="Cargar más inmuebles en la vista"
+        >
+          <svg class="w-4 h-4 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" x2="12" y1="5" y2="19"/>
+            <polyline points="19 12 12 19 5 12"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Sección: Servicios Integrales (Formato Editorial 3 Columnas - Fondo Sand) -->
+  <ServicesIntegrales variant="catalogue" background="sand" />
+
+  <!-- Pie de Página Institucional de Lujo -->
+  <Footer />
+</Layout>
+
+<script>
+  // Inicialización y Lógica de Filtrado Reactivo en el Cliente
+  document.addEventListener('DOMContentLoaded', () => {
+    const filtros = {
+      operacion: document.getElementById('filtro-operacion') as HTMLInputElement,
+      tipo:      document.getElementById('filtro-tipo')      as HTMLInputElement,
+      ciudad:    document.getElementById('filtro-ciudad')    as HTMLInputElement
+    };
+
+    const cards = document.querySelectorAll<HTMLElement>('[data-operacion]');
+    const countSpan = document.getElementById('results-number');
+    const noResults = document.getElementById('no-results-state');
+    const catalogGrid = document.getElementById('catalog-grid');
+    const resetBtn = document.getElementById('btn-limpiar-filtros');
+    const applyBtn = document.getElementById('filtro-buscar-btn');
+
+    // Sincronizar filtros interactivos a partir de Query Params de la URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('operacion') && filtros.operacion) {
+      filtros.operacion.value = params.get('operacion') || '';
+    }
+    if (params.has('tipo') && filtros.tipo) {
+      filtros.tipo.value = params.get('tipo') || '';
+    }
+    if (params.has('ciudad') && filtros.ciudad) {
+      filtros.ciudad.value = params.get('ciudad') || '';
+    }
+
+    // Ejecutar filtrado inicial
+    applyFilters();
+
+    function applyFilters() {
+      const op = filtros.operacion?.value || '';
+      const tipo = filtros.tipo?.value || '';
+      const ciudad = filtros.ciudad?.value || '';
+      let matches = 0;
+
+      cards.forEach((card) => {
+        const cardOp = card.getAttribute('data-operacion') || '';
+        const cardTipo = card.getAttribute('data-tipo') || '';
+        const cardCiudad = card.getAttribute('data-ciudad') || '';
+
+        const match = 
+          (!op || cardOp === op) &&
+          (!tipo || cardTipo === tipo) &&
+          (!ciudad || cardCiudad === ciudad);
+
+        if (match) {
+          card.classList.remove('hidden');
+          card.classList.add('flex');
+          matches++;
+        } else {
+          card.classList.remove('flex');
+          card.classList.add('hidden');
+        }
+      });
+
+      // Actualizar contador y estado de vacío
+      if (countSpan) {
+        countSpan.textContent = String(matches);
+      }
+
+      if (matches === 0) {
+        noResults?.classList.remove('hidden');
+        noResults?.classList.add('flex');
+        catalogGrid?.classList.add('hidden');
+      } else {
+        noResults?.classList.add('hidden');
+        noResults?.classList.remove('flex');
+        catalogGrid?.classList.remove('hidden');
+      }
+    }
+
+    function resetFilters() {
+      if (filtros.operacion) filtros.operacion.value = '';
+      if (filtros.tipo) filtros.tipo.value = '';
+      if (filtros.ciudad) filtros.ciudad.value = '';
+      
+      // Limpiar URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      applyFilters();
+    }
+
+    // Escuchar cambios interactivos en selectores (Filtrado instantáneo)
+    if (filtros.operacion) filtros.operacion.addEventListener('change', applyFilters);
+    if (filtros.tipo) filtros.tipo.addEventListener('change', applyFilters);
+    if (filtros.ciudad) filtros.ciudad.addEventListener('change', applyFilters);
+
+    // Escuchar clic en botón "Filtrar" y reseteo
+    applyBtn?.addEventListener('click', applyFilters);
+    resetBtn?.addEventListener('click', resetFilters);
+  });
+</script>

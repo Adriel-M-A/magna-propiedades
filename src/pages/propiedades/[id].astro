@@ -1,0 +1,382 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PropertyGallery from '../../components/PropertyGallery.astro';
+import ServicesIntegrales from '../../components/ServicesIntegrales.astro';
+import Footer from '../../components/Footer.astro';
+import type { Propiedad } from '../../components/PropertyCard.astro';
+
+import propiedadesRaw from '../../data/propiedades.json';
+
+// Generar rutas estáticas en tiempo de compilación para propiedades activas
+export function getStaticPaths() {
+  const propiedades = propiedadesRaw as Propiedad[];
+  return propiedades
+    .filter((p) => p.disponible)
+    .map((p) => ({ params: { id: p.id } }));
+}
+
+const { id } = Astro.params;
+const propiedades = propiedadesRaw as Propiedad[];
+const propiedad = propiedades.find((p) => p.id === id)!;
+
+if (!propiedad) {
+  return Astro.redirect('/');
+}
+
+const tipoLabel: Record<string, string> = {
+  casa: 'Casa',
+  departamento: 'Departamento',
+  local: 'Local Comercial',
+};
+
+const whatsappMsg = encodeURIComponent(propiedad.contacto.mensaje_whatsapp);
+const whatsappUrl = `https://wa.me/${propiedad.contacto.telefono}?text=${whatsappMsg}`;
+
+// Definición de las imágenes de la propiedad (se sincroniza con PropertyGallery.astro)
+const todasLasImagenes = [
+  ...(propiedad.imagenes.principal ? [propiedad.imagenes.principal] : []),
+  ...(propiedad.imagenes.galeria ?? [])
+];
+const mockImagenes = ['placeholder-1', 'placeholder-2', 'placeholder-3', 'placeholder-4'];
+const imagenesParaMostrar = todasLasImagenes.length > 0 ? todasLasImagenes : mockImagenes;
+---
+
+<Layout
+  title={`${propiedad.titulo} | Magna Propiedades`}
+  description={`Ficha técnica de ${propiedad.tipo === 'local' ? 'Local' : 'Propiedad'} en ${propiedad.operacion} en ${propiedad.barrio || propiedad.ciudad}. Consultá directo por WhatsApp.`}
+>
+  <!-- Cabecera Sticky Glassmorphic -->
+  <Header />
+
+  <main class="py-12 bg-brand-cream/10">
+    <div class="container-main flex flex-col gap-6">
+      <!-- ==========================================
+           BREADCRUMBS (Navegación Superior)
+           ========================================== -->
+      <nav class="flex items-center gap-1.5 text-[11px] text-brand-dark/40 font-semibold uppercase tracking-wider select-none mb-2" aria-label="Ruta de navegación">
+        <a href="/" class="hover:text-brand-sage transition-colors">Inicio</a>
+        <span class="text-brand-dark/20 text-xs font-normal">/</span>
+        <a href="/catalogo" class="hover:text-brand-sage transition-colors">Propiedades</a>
+        <span class="text-brand-dark/20 text-xs font-normal">/</span>
+        <span class="text-brand-dark/70" aria-current="page">{propiedad.titulo}</span>
+      </nav>
+
+      <!-- ==========================================
+           PRIMERA FILA: Galería de Imágenes (Ancho Completo)
+           ========================================== -->
+      <div class="w-full mb-4 animate-fadeIn">
+        <PropertyGallery imagenes={propiedad.imagenes} titulo={propiedad.titulo} />
+      </div>
+
+      <!-- ==========================================
+           SEGUNDA FILA: Toda la Información (Grid 2 Columnas)
+           ========================================== -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        
+        <!-- COLUMNA IZQUIERDA: Detalles, Ficha e Info (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          
+          <!-- Encabezado de Información (Título, Badges, Ubicación) -->
+          <div class="bg-white border border-brand-sand rounded-2xl p-6 md:p-8 flex flex-col gap-4 shadow-sm animate-fadeInUp">
+            <!-- Badges -->
+            <div class="flex items-center gap-2 select-none">
+              <span class={`badge ${propiedad.operacion === 'venta' ? 'badge-venta' : 'badge-alquiler'}`}>
+                {propiedad.operacion === 'alquiler' ? 'Alquiler' : 'Venta'}
+              </span>
+              <span class="badge badge-tipo">
+                {tipoLabel[propiedad.tipo] || propiedad.tipo}
+              </span>
+            </div>
+
+            <!-- Título y Dirección -->
+            <div class="flex flex-col gap-1.5">
+              <h1 class="text-2xl sm:text-3xl font-serif font-bold text-brand-dark leading-tight">
+                {propiedad.titulo}
+              </h1>
+              <p class="flex items-center gap-1 text-[11px] text-brand-dark/50 font-bold tracking-wide uppercase select-none">
+                <svg class="w-3.5 h-3.5 text-brand-sage flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                {propiedad.direccion} • {propiedad.ciudad}
+              </p>
+            </div>
+          </div>
+
+          <!-- Grilla de Características Críticas -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 select-none animate-fadeInUp delay-100">
+            {propiedad.caracteristicas_criticas.dormitorios !== null && (
+              <div class="bg-white border border-brand-sand rounded-2xl p-4 flex items-center gap-3.5 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-brand-sage/10 text-brand-sage flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-[9px] font-bold text-brand-sage uppercase tracking-wider">Dormitorios</span>
+                  <span class="text-xs sm:text-sm font-bold text-brand-dark leading-none">{propiedad.caracteristicas_criticas.dormitorios} Dorm.</span>
+                </div>
+              </div>
+            )}
+
+            {propiedad.caracteristicas_criticas.banos !== null && (
+              <div class="bg-white border border-brand-sand rounded-2xl p-4 flex items-center gap-3.5 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-brand-sage/10 text-brand-sage flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>
+                    <line x1="2" x2="22" y1="12" y2="12"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-[9px] font-bold text-brand-sage uppercase tracking-wider">Baños</span>
+                  <span class="text-xs sm:text-sm font-bold text-brand-dark leading-none">{propiedad.caracteristicas_criticas.banos} {propiedad.caracteristicas_criticas.banos === 1 ? 'Baño' : 'Baños'}</span>
+                </div>
+              </div>
+            )}
+
+            {propiedad.caracteristicas_criticas.superficie_m2 !== null && (
+              <div class="bg-white border border-brand-sand rounded-2xl p-4 flex items-center gap-3.5 shadow-sm col-span-2 sm:col-span-1">
+                <div class="w-10 h-10 rounded-xl bg-brand-sage/10 text-brand-sage flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/>
+                  </svg>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-[9px] font-bold text-brand-sage uppercase tracking-wider">Superficie</span>
+                  <span class="text-xs sm:text-sm font-bold text-brand-dark leading-none">{propiedad.caracteristicas_criticas.superficie_m2} m²</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Descripción Detallada -->
+          <div class="bg-white border border-brand-sand rounded-2xl p-6 md:p-8 flex flex-col gap-4 shadow-sm animate-fadeInUp">
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-brand-dark pb-2 border-b border-brand-sand">
+              Descripción de la Propiedad
+            </h2>
+            <p class="text-xs sm:text-sm text-brand-dark/80 leading-relaxed font-medium whitespace-pre-line">
+              {propiedad.descripcion_general}
+            </p>
+          </div>
+
+          <!-- Comodidades Destacadas (Checkmarks circulares) -->
+          {propiedad.comodidades_destacadas.length > 0 && (
+            <div class="bg-white border border-brand-sand rounded-2xl p-6 md:p-8 flex flex-col gap-4 shadow-sm animate-fadeInUp delay-200">
+              <h2 class="text-base font-serif font-bold text-brand-dark">
+                Comodidades Destacadas
+              </h2>
+              <ul class="grid grid-cols-2 gap-3.5">
+                {propiedad.comodidades_destacadas.map((item) => (
+                  <li class="flex items-center gap-2 text-xs font-semibold text-brand-dark/85">
+                    <div class="w-5 h-5 rounded-full bg-brand-sage/10 text-brand-sage flex items-center justify-center flex-shrink-0 select-none">
+                      <svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+        </div>
+
+        <!-- COLUMNA DERECHA: Conversión y Ubicación (Sticky Sidebar) (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-20">
+          
+          <!-- Botón de Conversión de WhatsApp Principal (Standalone) -->
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-whatsapp w-full py-4 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2.5 shadow-sm transition-all hover:scale-[1.01] animate-fadeInUp"
+            id="whatsapp-cta-detail"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.739-1.446L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.42 9.863-9.864.002-2.637-1.03-5.114-2.905-6.99C16.556 1.878 14.079.847 11.442.845 6.008.845 1.585 5.26 1.581 10.7c-.001 1.745.453 3.447 1.317 4.962l-.999 3.648 3.748-.983-.001-.001zm11.366-6.196c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
+            </svg>
+            Consultar por WhatsApp
+          </a>
+
+          <!-- Ubicación / Mapa Interactivo Embebido -->
+          <div class="bg-white border border-brand-sand rounded-2xl p-6 flex flex-col gap-4 shadow-sm animate-fadeInUp delay-300">
+            <div class="flex items-center justify-between select-none pb-2 border-b border-brand-sand">
+              <span class="text-xs font-serif font-bold text-brand-dark">Ubicación</span>
+              <span class="flex items-center gap-1 text-[10px] font-bold text-brand-sage uppercase tracking-wider">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                {propiedad.barrio || propiedad.ciudad}
+              </span>
+            </div>
+            
+            <!-- Contenedor del Mapa Embebido Interactivo de Lujo -->
+            <div class="w-full aspect-[16/10] rounded-xl overflow-hidden border border-brand-sand shadow-inner bg-brand-cream relative">
+              <iframe
+                title={`Ubicación de la propiedad en ${propiedad.direccion}`}
+                width="100%"
+                height="100%"
+                style="border:0; filter: grayscale(10%) contrast(90%);"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(propiedad.direccion + ', ' + propiedad.ciudad + ', Chubut, Argentina')}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sección: Servicios Integrales (Formato Editorial 3 Columnas - Fondo Sand) -->
+  <ServicesIntegrales variant="detail" background="sand" />
+
+  <!-- Pie de Página de Lujo -->
+  <Footer />
+
+  <!-- ==========================================
+       MODAL INTERACTIVO DE GALERÍA (En el Root Stacking Context de la Página - Escape de Z-Index)
+       ========================================== -->
+  <div 
+    id="fullscreen-gallery-modal" 
+    class="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-lg hidden items-center justify-center p-4 md:p-10 select-none animate-fadeIn"
+    style="position: fixed !important; z-index: 99999 !important; inset: 0px !important;"
+  >
+    <!-- Botón Cerrar (Tamaño y estilo premium) -->
+    <button 
+      id="close-gallery-modal"
+      type="button"
+      class="absolute top-6 right-6 z-[10000] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-all border border-white/15 shadow-sm"
+      aria-label="Cerrar galería"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Flechas de navegación premium (Directas del modal, fuera del Swiper para alineación simétrica perfecta) -->
+    <button 
+      id="modal-prev-btn"
+      type="button"
+      class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-[10000] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-all border border-white/15 shadow-sm"
+      aria-label="Imagen anterior"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button 
+      id="modal-next-btn"
+      type="button"
+      class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-[10000] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-all border border-white/15 shadow-sm"
+      aria-label="Siguiente imagen"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <!-- Swiper del Modal (max-w-5xl, centrado perfecto y alineado con las flechas) -->
+    <div class="swiper modal-swiper w-full max-w-5xl h-[70vh] md:h-[80vh] rounded-2xl overflow-hidden" id="modal-gallery-swiper">
+      <div class="swiper-wrapper">
+        {imagenesParaMostrar.map((src, i) => (
+          <div class="swiper-slide w-full h-full flex items-center justify-center p-4">
+            {src.startsWith('placeholder') ? (
+              <div class="w-full h-full flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-brand-cream to-brand-sand text-brand-sage border border-brand-sand rounded-2xl shadow-xl p-8 text-center select-none">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 opacity-50">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span class="text-sm font-bold uppercase tracking-widest opacity-60">Sin Imagen Disponible (Foto {i + 1})</span>
+              </div>
+            ) : (
+              <img 
+                src={src} 
+                alt={`${propiedad.titulo} - Ampliación ${i + 1}`} 
+                class="max-w-full max-h-full object-contain rounded-2xl shadow-lg"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+      <div class="swiper-pagination !bottom-4"></div>
+    </div>
+  </div>
+
+  <script>
+    // Inicialización del Modal Interactivo y Swiper de Ampliación
+    const triggers = document.querySelectorAll('[data-gallery-trigger]');
+    const modal = document.getElementById('fullscreen-gallery-modal');
+    const closeBtn = document.getElementById('close-gallery-modal');
+    let modalSwiperInstance: any = null;
+
+    if (triggers.length > 0 && modal && closeBtn) {
+      import('swiper').then(({ default: Swiper }) => {
+        import('swiper/modules').then(({ Pagination, Navigation }) => {
+          
+          // Crear instancia del Swiper del modal
+          modalSwiperInstance = new Swiper('#modal-gallery-swiper', {
+            modules: [Pagination, Navigation],
+            pagination: {
+              el: '#modal-gallery-swiper .swiper-pagination',
+              clickable: true,
+            },
+            navigation: {
+              nextEl: '#modal-next-btn',
+              prevEl: '#modal-prev-btn',
+            },
+            loop: true,
+            grabCursor: true,
+            slidesPerView: 1,
+          });
+
+          // Manejar apertura de modal
+          triggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+              const index = parseInt(trigger.getAttribute('data-gallery-trigger') || '0');
+              
+              // Mostrar modal
+              modal.classList.remove('hidden');
+              modal.classList.add('flex');
+              document.body.style.overflow = 'hidden'; // Evitar scroll
+              
+              // IMPORTANTE: Retardo de 50ms para permitir reflow del navegador antes de recalcular dimensiones
+              setTimeout(() => {
+                if (modalSwiperInstance) {
+                  modalSwiperInstance.update();
+                  modalSwiperInstance.slideToLoop(index, 0);
+                }
+              }, 50);
+            });
+          });
+
+          // Manejar cierre de modal
+          const closeModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+          };
+
+          closeBtn.addEventListener('click', closeModal);
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              closeModal();
+            }
+          });
+
+          // Cerrar con tecla Escape
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+              closeModal();
+            }
+          });
+
+        });
+      });
+    }
+  </script>
+</Layout>

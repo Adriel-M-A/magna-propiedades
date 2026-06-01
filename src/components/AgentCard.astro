@@ -1,0 +1,74 @@
+---
+// AgentCard.astro - Componente premium para la tarjeta de contacto del agente en las fichas de detalle
+
+interface Props {
+  nombre?: string;
+  cargo?: string;
+  avatarUrl?: string;
+  mensajeWhatsApp?: string;
+}
+
+const {
+  nombre = 'Valentina Magna',
+  cargo = 'Agente Inmobiliario Senior',
+  // Usamos un avatar premium sutil
+  avatarUrl = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80',
+  mensajeWhatsApp = 'Hola Valentina, me interesa recibir más información sobre esta propiedad.'
+} = Astro.props;
+
+const whatsappMsg = encodeURIComponent(mensajeWhatsApp);
+const whatsappUrl = `https://wa.me/0000000000?text=${whatsappMsg}`;
+---
+
+<div class="bg-white rounded-2xl border border-brand-sand p-6 shadow-sm flex flex-col gap-5 w-full max-w-sm animate-fadeInUp">
+  <!-- Encabezado de Agente (Avatar + Datos) -->
+  <div class="flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-sand bg-brand-cream flex-shrink-0 select-none">
+      <img 
+        src={avatarUrl} 
+        alt={`Fotografía de perfil de ${nombre}`}
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+    <div class="flex flex-col gap-0.5 select-none">
+      <h3 class="text-sm sm:text-base font-serif font-bold text-brand-dark leading-tight">{nombre}</h3>
+      <span class="text-[10px] font-bold text-brand-sage uppercase tracking-wider">{cargo}</span>
+    </div>
+  </div>
+
+  <!-- Cita Comercial -->
+  <p class="text-xs sm:text-sm text-brand-dark/80 italic font-medium leading-relaxed bg-brand-cream/40 p-4 rounded-xl border border-brand-sand/50">
+    "Esta propiedad es única por su calidad constructiva. Estoy disponible para coordinar una visita privada hoy mismo."
+  </p>
+
+  <!-- Botones de Acción Táctiles -->
+  <div class="flex flex-col gap-2 w-full">
+    <!-- WhatsApp Green (Acción Principal) -->
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-whatsapp w-full justify-center py-3 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-lg shadow-sm"
+      id="agent-whatsapp-btn"
+    >
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.739-1.446L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.42 9.863-9.864.002-2.637-1.03-5.114-2.905-6.99C16.556 1.878 14.079.847 11.442.845 6.008.845 1.585 5.26 1.581 10.7c-.001 1.745.453 3.447 1.317 4.962l-.999 3.648 3.748-.983-.001-.001zm11.366-6.196c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
+      </svg>
+      Consultar por WhatsApp
+    </a>
+
+    <!-- Enviar Mail (Acción Secundaria) -->
+    <a
+      href="mailto:info@magnapropiedades.com?subject=Consulta%20por%20Propiedad"
+      class="btn btn-outline w-full justify-center py-3 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-lg border border-brand-sand text-brand-dark hover:bg-brand-sand/50 transition-all shadow-sm"
+      id="agent-mail-btn"
+    >
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+      Enviar Mail
+    </a>
+  </div>
+</div>

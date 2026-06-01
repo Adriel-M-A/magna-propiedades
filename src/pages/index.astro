@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import ServicesProfessionals from '../components/ServicesProfessionals.astro';
+import ServicesIntegrales from '../components/ServicesIntegrales.astro';
+import Footer from '../components/Footer.astro';
+import type { Propiedad } from '../components/PropertyCard.astro';
+
+import propiedadesRaw from '../data/propiedades.json';
+
+// Filtrar propiedades disponibles y destacadas, ordenadas de más reciente a más antigua
+const propiedadesDestacadas: Propiedad[] = (propiedadesRaw as Propiedad[])
+  .filter((p) => p.disponible && p.destacada)
+  .sort((a, b) => new Date(b.fecha_carga).getTime() - new Date(a.fecha_carga).getTime())
+  .slice(0, 3); // Mostrar máximo las 3 destacadas más recientes
+---
+
+<Layout
+  title="Magna Propiedades | Inmobiliaria de Vanguardia en Chubut"
+  description="Catálogo exclusivo de propiedades en Trelew, Rawson y Puerto Madryn. Consultas directas y cotización 100% privada por WhatsApp."
+>
+  <!-- Cabecera Sticky Glassmorphic -->
+  <Header />
+
+  <!-- Hero principal de alto impacto con buscador rápido integrado -->
+  <Hero />
+
+  <!-- ==========================================
+       SECCIÓN: PROPIEDADES DESTACADAS
+       ========================================== -->
+  <section class="py-16 bg-brand-cream/20">
+    <div class="container-main">
+      <!-- Encabezado de la Sección -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 animate-fadeInUp">
+        <div class="flex flex-col gap-2">
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-sage/10 text-brand-sage uppercase tracking-wider w-fit">
+            Oportunidades
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-bold font-serif text-brand-dark leading-tight">
+            Propiedades Destacadas
+          </h2>
+          <p class="text-xs sm:text-sm text-brand-dark/70 max-w-md">
+            Descubrí las mejores oportunidades residenciales y comerciales en la zona.
+          </p>
+        </div>
+        
+        <!-- Enlace al catálogo completo -->
+        <a 
+          href="/catalogo" 
+          class="inline-flex items-center gap-1 text-xs font-bold text-brand-sage hover:text-brand-dark transition-colors uppercase tracking-wider select-none"
+        >
+          Ver todo el catálogo
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" x2="19" y1="12" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Grilla de Tarjetas Destacadas -->
+      {propiedadesDestacadas.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {propiedadesDestacadas.map((p, i) => (
+            <PropertyCard propiedad={p} index={i} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12 border border-dashed border-brand-sand rounded-2xl text-brand-dark/40 font-medium">
+          No hay propiedades destacadas registradas actualmente.
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN: SERVICIOS INMOBILIARIOS Core
+       ========================================== -->
+  <ServicesProfessionals />
+
+  <!-- ==========================================
+       SECCIÓN: MAGNA SERVICIOS INTEGRALES (Fondo Sage)
+       ========================================== -->
+  <ServicesIntegrales variant="homepage" background="sage" />
+
+  <!-- Footer Institucional de Lujo -->
+  <Footer />
+</Layout>

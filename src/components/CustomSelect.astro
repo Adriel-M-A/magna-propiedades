@@ -1,0 +1,198 @@
+---
+// CustomSelect.astro - Componente de selección premium reutilizable y accesible con panel expandido de lujo
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  id: string;
+  name?: string;
+  label: string;
+  placeholder: string;
+  options: Option[];
+  defaultValue?: string;
+  class?: string;
+}
+
+const {
+  id,
+  name = id,
+  label,
+  placeholder,
+  options,
+  defaultValue = '',
+  class: className = '',
+} = Astro.props;
+
+// Buscar etiqueta inicial basada en valor por defecto
+const initialSelected = options.find((opt) => opt.value === defaultValue);
+const initialLabel = initialSelected ? initialSelected.label : placeholder;
+---
+
+<div class={`custom-select-container relative flex flex-col gap-0.5 w-full select-none ${className}`} data-select-id={id}>
+  <!-- Etiqueta del Campo -->
+  <span class="text-[9px] font-bold text-brand-sage uppercase tracking-wider pl-1 cursor-default">
+    {label}
+  </span>
+
+  <!-- Input Oculto para Formularios y Selectores JS (Permite .value directo en cliente) -->
+  <input 
+    type="hidden" 
+    name={name} 
+    id={id} 
+    value={defaultValue} 
+    class="custom-select-input" 
+  />
+
+  <!-- Contenedor Relativo para el Botón y el Panel (Garantiza posicionamiento exacto debajo del botón y libre de influencias del label) -->
+  <div class="relative w-full">
+    <!-- Botón Gatillador Premium -->
+    <button
+      type="button"
+      class="custom-select-trigger w-full flex items-center justify-between gap-2 py-1.5 px-1 bg-transparent text-xs font-semibold text-brand-dark focus:outline-none text-left cursor-pointer transition-all border-b border-transparent focus:border-brand-sage/35"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+    >
+      <span class="custom-select-label truncate">{initialLabel}</span>
+      <svg class="w-3.5 h-3.5 text-brand-sage flex-shrink-0 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </button>
+
+    <!-- Panel de Opciones Expandido de Lujo (Glassmorphic) -->
+    <div 
+      class="custom-select-panel absolute left-0 right-0 top-full mt-1 z-35 bg-white/95 backdrop-blur-md border border-brand-sand rounded-xl shadow-lg opacity-0 scale-95 pointer-events-none transition-all duration-200 transform origin-top max-h-56 overflow-y-auto py-1"
+      role="listbox"
+    >
+      <!-- Opción Placeholder / Limpiar -->
+      <div
+        class={`custom-select-option px-3 py-2 text-xs font-medium cursor-pointer transition-colors ${defaultValue === '' ? 'bg-brand-sand text-brand-sage' : 'text-brand-dark/85 hover:bg-brand-cream hover:text-brand-sage'}`}
+        data-value=""
+        role="option"
+        aria-selected={defaultValue === '' ? 'true' : 'false'}
+      >
+        {placeholder}
+      </div>
+
+      <!-- Opciones Dinámicas -->
+      {options.map((opt) => (
+        <div
+          class={`custom-select-option px-3 py-2 text-xs font-medium cursor-pointer transition-colors ${defaultValue === opt.value ? 'bg-brand-sand text-brand-sage font-bold' : 'text-brand-dark/85 hover:bg-brand-cream hover:text-brand-sage'}`}
+          data-value={opt.value}
+          role="option"
+          aria-selected={defaultValue === opt.value ? 'true' : 'false'}
+        >
+          {opt.label}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Inicialización de los Selectores Personalizados en Cliente
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll<HTMLElement>('.custom-select-container');
+
+    containers.forEach((container) => {
+      const trigger = container.querySelector<HTMLButtonElement>('.custom-select-trigger');
+      const panel = container.querySelector<HTMLElement>('.custom-select-panel');
+      const input = container.querySelector<HTMLInputElement>('.custom-select-input');
+      const labelSpan = container.querySelector<HTMLElement>('.custom-select-label');
+      const options = container.querySelectorAll<HTMLElement>('.custom-select-option');
+      const placeholder = options[0]?.textContent?.trim() || '';
+
+      if (!trigger || !panel || !input || !labelSpan) return;
+
+      // 1. Abrir / Cerrar el Panel de Opciones
+      const togglePanel = (show?: boolean) => {
+        const isVisible = show !== undefined ? show : !panel.classList.contains('opacity-0');
+        
+        if (isVisible) {
+          // Cerrar
+          panel.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.querySelector('svg')?.classList.remove('rotate-180');
+        } else {
+          // Abrir - Cerrar primero todos los demás selectores para evitar solapamientos
+          document.querySelectorAll('.custom-select-panel').forEach(p => {
+            if (p !== panel) {
+              p.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+              p.parentElement?.querySelector('.custom-select-trigger')?.setAttribute('aria-expanded', 'false');
+              p.parentElement?.querySelector('.custom-select-trigger svg')?.classList.remove('rotate-180');
+            }
+          });
+
+          panel.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+          trigger.setAttribute('aria-expanded', 'true');
+          trigger.querySelector('svg')?.classList.add('rotate-180');
+        }
+      };
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePanel();
+      });
+
+      // 2. Selección de Opción
+      options.forEach((option) => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = option.getAttribute('data-value') || '';
+          const labelText = option.textContent?.trim() || '';
+
+          // Actualizar valor e interfaz
+          input.value = val; // Esto también disparará el set del descriptor interceptor
+          
+          togglePanel(true); // Cerrar panel
+        });
+      });
+
+      // 3. Interceptar y Sobrescribir Setter programático de `.value` en el Input Oculto
+      // Esto permite que filtros.operacion.value = 'venta' actualice el UI automáticamente.
+      const prototype = HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(prototype, 'value');
+      
+      if (descriptor && descriptor.set) {
+        Object.defineProperty(input, 'value', {
+          get() {
+            return descriptor.get?.call(this);
+          },
+          set(newVal) {
+            descriptor.set?.call(this, newVal);
+            
+            // Buscar la opción seleccionada visualmente
+            let matched = false;
+            options.forEach((opt) => {
+              const optVal = opt.getAttribute('data-value') || '';
+              if (optVal === newVal) {
+                opt.classList.add('bg-brand-sand', 'text-brand-sage', 'font-bold');
+                opt.setAttribute('aria-selected', 'true');
+                labelSpan.textContent = opt.textContent?.trim() || '';
+                matched = true;
+              } else {
+                opt.classList.remove('bg-brand-sand', 'text-brand-sage', 'font-bold');
+                opt.setAttribute('aria-selected', 'false');
+              }
+            });
+
+            if (!matched) {
+              labelSpan.textContent = placeholder;
+            }
+
+            // Despachar evento 'change' nativo sintético
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+      }
+
+      // 4. Cerrar al hacer clic fuera del componente
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target as Node)) {
+          togglePanel(true);
+        }
+      });
+    });
+  });
+</script>
