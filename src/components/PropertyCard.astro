@@ -1,6 +1,5 @@
 ---
-// PropertyCard.astro - Tarjeta de propiedad premium para el catálogo y destacados
-
+// PropertyCard.astro — Variante 'home' (fondo blanco) y 'catalog' (fondo cream, sombra)
 export interface Propiedad {
   id: string;
   disponible: boolean;
@@ -32,122 +31,111 @@ export interface Propiedad {
 interface Props {
   propiedad: Propiedad;
   index?: number;
+  variant?: 'home' | 'catalog';
 }
 
-const { propiedad, index = 0 } = Astro.props;
+const { propiedad, index = 0, variant = 'home' } = Astro.props;
+const delayClass = index > 0 ? `reveal-delay-${Math.min(index, 3)}` : '';
 
-// Delay de carga para animaciones sutiles progresivas
-const delayClass = `delay-${Math.min(index * 100, 400)}`;
+// 'home': card sin borde, padding solo en título y ubicación.
+// 'catalog': card sobre fondo crema → sombra suave + borde, padding en todo el contenido interior.
+const cardClass =
+  variant === 'catalog'
+    ? 'bg-white border border-brand-sand shadow-md hover:shadow-lg'
+    : 'bg-white';
 
-const tipoLabel: Record<string, string> = {
-  casa: 'Casa',
-  departamento: 'Depto.',
-  local: 'Local',
-};
+const innerContainerClass = variant === 'catalog' ? 'px-5' : '';
+const textPaddingClass = variant === 'home' ? 'px-5' : '';
 ---
 
 <article
-  class={`property-card flex flex-col h-full bg-white border border-brand-sand rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 animate-fadeInUp ${delayClass}`}
+  class={`reveal ${delayClass} flex flex-col transition-all duration-300 ${cardClass}`}
   data-operacion={propiedad.operacion}
   data-tipo={propiedad.tipo}
   data-ciudad={propiedad.ciudad}
 >
-  <!-- Contenedor de Imagen o Placeholder -->
-  <a href={`/propiedades/${propiedad.id}`} class="block relative overflow-hidden aspect-[4/3] select-none" aria-label={`Ver detalles de ${propiedad.titulo}`}>
+  <!-- FILA 1: Imagen Cuadrada con Badge de Operación -->
+  <a
+    href={`/propiedades/${propiedad.id}`}
+    class="block relative overflow-hidden aspect-square select-none group outline-none"
+    aria-label={`Ver detalles de ${propiedad.titulo}`}
+  >
     {propiedad.imagenes.principal ? (
       <img
         src={propiedad.imagenes.principal}
         alt={propiedad.titulo}
-        class="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500"
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
         decoding="async"
       />
     ) : (
-      <div class="property-image-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <div class="w-full h-full bg-brand-sand/40 flex flex-col items-center justify-center gap-3">
+        <svg class="w-8 h-8 text-brand-dark/25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
-        <span>Sin imagen</span>
+        <span class="text-[9px] font-bold uppercase tracking-widest text-brand-dark/30">Sin Imagen</span>
       </div>
     )}
 
-    <!-- Badges Flotantes sobre la Imagen (Fiel a Mockups) -->
-    <div class="absolute top-3.5 left-3.5 flex gap-1.5 z-10">
-      <span class={`badge ${propiedad.operacion === 'venta' ? 'badge-venta' : 'badge-alquiler'}`}>
-        {propiedad.operacion === 'alquiler' ? 'Alquiler' : 'Venta'}
-      </span>
-      <span class="badge badge-tipo">
-        {tipoLabel[propiedad.tipo] || propiedad.tipo}
-      </span>
-    </div>
+    <!-- Badge de Operación superpuesto -->
+    <span class={`absolute top-3 left-3 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-white ${propiedad.operacion === 'venta' ? 'bg-brand-sage' : 'bg-brand-dark'}`}>
+      {propiedad.operacion === 'alquiler' ? 'Alquiler' : 'Venta'}
+    </span>
   </a>
 
-  <!-- Cuerpo de la Tarjeta -->
-  <div class="p-5 flex flex-col gap-4 flex-1">
-    <!-- Título y Dirección -->
-    <div class="flex flex-col gap-1.5">
-      <a href={`/propiedades/${propiedad.id}`} class="no-underline group">
-        <h3 class="text-base font-serif font-bold text-brand-dark group-hover:text-brand-sage transition-colors leading-tight line-clamp-2">
-          {propiedad.titulo}
-        </h3>
-      </a>
-      
-      <!-- Ubicación -->
-      <p class="flex items-center gap-1 text-[11px] text-brand-dark/50 font-medium select-none">
-        <svg class="w-3.5 h-3.5 text-brand-sage flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-        {propiedad.direccion} • {propiedad.ciudad}
-      </p>
-    </div>
+  <!-- Filas 2–5: Contenedor principal de info -->
+  <div class={`flex flex-col flex-1 pt-4 pb-5 gap-0 ${innerContainerClass}`}>
 
-    <!-- Características Críticas (Bordes finos) -->
-    <div class="grid grid-cols-3 gap-2 py-3 border-t border-b border-brand-sand text-[11px] text-brand-dark/70 font-semibold select-none">
-      {propiedad.caracteristicas_criticas.dormitorios !== null ? (
-        <div class="flex items-center justify-center gap-1" title="Dormitorios">
-          <svg class="w-3.5 h-3.5 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <!-- FILA 2: Título -->
+    <a href={`/propiedades/${propiedad.id}`} class={`no-underline group outline-none ${textPaddingClass}`}>
+      <h3 class="text-lg sm:text-xl font-serif font-bold text-brand-dark group-hover:text-brand-sage transition-colors leading-tight">
+        {propiedad.titulo}
+      </h3>
+    </a>
+
+    <!-- FILA 3: Dirección / Ciudad -->
+    <p class={`mt-1.5 text-xs text-brand-dark/55 font-medium ${textPaddingClass}`}>
+      {propiedad.barrio ? `${propiedad.barrio}, ` : ''}{propiedad.ciudad}
+    </p>
+
+    <!-- FILA 4: Amenities -->
+    <div class="mt-4 pt-4 border-t border-brand-sand flex items-center gap-5 text-xs text-brand-dark/70 font-semibold">
+      {propiedad.caracteristicas_criticas.dormitorios !== null && (
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-brand-dark/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>
           </svg>
-          <span>{propiedad.caracteristicas_criticas.dormitorios} dorm.</span>
-        </div>
-      ) : (
-        <div class="flex items-center justify-center text-brand-dark/30">—</div>
+          {propiedad.caracteristicas_criticas.dormitorios} Dorm.
+        </span>
       )}
-      
-      {propiedad.caracteristicas_criticas.banos !== null ? (
-        <div class="flex items-center justify-center gap-1" title="Baños">
-          <svg class="w-3.5 h-3.5 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      {propiedad.caracteristicas_criticas.banos !== null && (
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-brand-dark/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>
             <line x1="2" x2="22" y1="12" y2="12"/>
           </svg>
-          <span>{propiedad.caracteristicas_criticas.banos} {propiedad.caracteristicas_criticas.banos === 1 ? 'baño' : 'baños'}</span>
-        </div>
-      ) : (
-        <div class="flex items-center justify-center text-brand-dark/30">—</div>
+          {propiedad.caracteristicas_criticas.banos} {propiedad.caracteristicas_criticas.banos === 1 ? 'Baño' : 'Baños'}
+        </span>
       )}
-
-      {propiedad.caracteristicas_criticas.superficie_m2 !== null ? (
-        <div class="flex items-center justify-center gap-1" title="Superficie">
-          <svg class="w-3.5 h-3.5 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      {propiedad.caracteristicas_criticas.superficie_m2 !== null && (
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-brand-dark/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/>
           </svg>
-          <span>{propiedad.caracteristicas_criticas.superficie_m2} m²</span>
-        </div>
-      ) : (
-        <div class="flex items-center justify-center text-brand-dark/30">—</div>
+          {propiedad.caracteristicas_criticas.superficie_m2} m²
+        </span>
       )}
     </div>
 
-    <!-- Pie de Tarjeta: Botón "Ver Detalle" de ancho completo -->
-    <div class="mt-auto pt-2">
+    <!-- FILA 5: Botón de Acción -->
+    <div class="mt-5">
       <a
         href={`/propiedades/${propiedad.id}`}
-        class="btn btn-outline w-full justify-center border border-brand-sand rounded-full py-2 text-[10px] font-bold uppercase tracking-wider text-brand-dark hover:bg-brand-sand transition-all select-none text-center"
-        aria-label={`Ver detalle de ${propiedad.titulo}`}
+        class="btn btn-outline w-full justify-center py-3 text-[10px]"
+        aria-label={`Ver detalles de ${propiedad.titulo}`}
       >
-        Ver Detalle
+        Ver Detalles
       </a>
     </div>
   </div>

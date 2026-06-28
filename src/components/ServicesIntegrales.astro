@@ -1,190 +1,111 @@
 ---
-// ServicesIntegrales.astro - Componente premium reutilizable para la sección de servicios integrales
-
+// ServicesIntegrales.astro - Componente premium puramente tipográfico para servicios integrales
 interface Props {
   variant?: 'homepage' | 'detail' | 'catalogue';
-  background?: 'sage' | 'sand';
+  background?: 'sage' | 'sand' | 'cream';
 }
 
-const { variant = 'homepage', background = 'sand' } = Astro.props;
+const { variant = 'homepage', background = 'cream' } = Astro.props;
 
-// Clases de fondo basadas en los tokens semánticos definidos en global.css
-const bgClass = background === 'sage' 
-  ? 'bg-[rgba(80,99,86,0.06)]' 
-  : 'bg-brand-sand';
+const bgClass = 
+  background === 'sage' ? 'bg-brand-sage/5' :
+  background === 'sand' ? 'bg-brand-sand' :
+  'bg-brand-cream';
 ---
 
-{variant === 'homepage' ? (
-  /* ==========================================
-     VARIANTE: HOMEPAGE (Dos Columnas + Imagen)
-     ========================================== */
-  <section class={`py-16 ${bgClass} transition-colors duration-300`}>
-    <div class="container-main">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        <!-- Columna Izquierda: Texto y CTA -->
-        <div class="lg:col-span-7 flex flex-col items-start gap-6 animate-fadeInUp">
-          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-sage/10 text-brand-sage uppercase tracking-wider">
-            Solución Integral
-          </span>
-          <h2 class="text-3xl sm:text-4xl font-bold font-serif text-brand-dark leading-tight max-w-xl">
-            Magna Servicios Integrales
-          </h2>
-          <p class="text-sm sm:text-base text-brand-dark/80 leading-relaxed max-w-xl">
-            Más que una inmobiliaria, somos tu aliado en el cuidado de tu propiedad. Ofrecemos servicios especializados de limpieza, mantenimiento y asesoría técnica para que no tengas que preocuparte por nada.
-          </p>
-          
-          <!-- Badges de especialidad con iconos limpios -->
-          <div class="flex flex-wrap gap-3 my-2">
-            <span class="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-brand-sand text-xs font-semibold text-brand-dark shadow-sm">
-              <svg class="w-4 h-4 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              Seguridad & Legal
-            </span>
-            <span class="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-brand-sand text-xs font-semibold text-brand-dark shadow-sm">
-              <svg class="w-4 h-4 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-              </svg>
-              Mantenimiento
-            </span>
-            <span class="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-brand-sand text-xs font-semibold text-brand-dark shadow-sm">
-              <svg class="w-4 h-4 text-brand-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
-                <path d="M7 2v20"/>
-                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
-              </svg>
-              Limpieza Profesional
-            </span>
-          </div>
-
-          <!-- Botón de WhatsApp de alta conversión -->
-          <a
-            href="https://wa.me/0000000000?text=Hola%2C%20quisiera%20solicitar%20un%20presupuesto%20para%20servicios%20de%20Magna%20Servicios%20Integrales."
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-whatsapp px-6 py-3.5 text-sm sm:text-base inline-flex items-center gap-2 text-white font-semibold rounded-lg shadow-sm"
-          >
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.739-1.446L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.42 9.863-9.864.002-2.637-1.03-5.114-2.905-6.99C16.556 1.878 14.079.847 11.442.845 6.008.845 1.585 5.26 1.581 10.7c-.001 1.745.453 3.447 1.317 4.962l-.999 3.648 3.748-.983-.001-.001zm11.366-6.196c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
-            </svg>
-            Solicitar Presupuesto Integral
-          </a>
-        </div>
-        
-        <!-- Columna Derecha: Imagen Ilustrativa Premium -->
-        <div class="lg:col-span-5 flex justify-center animate-fadeInUp delay-200">
-          <div class="relative w-full max-w-sm aspect-square bg-white p-3 rounded-2xl border border-brand-sand shadow-sm overflow-hidden group">
-            <div class="w-full h-full rounded-lg bg-brand-cream border border-brand-sand flex flex-col items-center justify-center text-center gap-3 p-6 select-none overflow-hidden relative">
-              <!-- Grid decorativa sutil -->
-              <div class="absolute inset-0 bg-[radial-gradient(#506356_1px,transparent_1px)] [background-size:16px_16px] opacity-10"></div>
-              
-              <svg class="w-12 h-12 text-brand-sage relative z-10 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="m9 12 2 2 4-4"/>
-              </svg>
-              
-              <h3 class="text-lg font-serif font-bold text-brand-dark relative z-10">Garantía Magna</h3>
-              <p class="text-xs text-brand-dark/60 leading-relaxed max-w-[24ch] relative z-10">
-                Personal capacitado y asegurado para resguardar la seguridad de tu hogar.
-              </p>
-              
-              <!-- Badge flotante de Instagram -->
-              <a 
-                href="https://instagram.com/magna_servicios_integrales" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="mt-2 text-xs font-semibold text-brand-sage hover:underline relative z-10 inline-flex items-center gap-1.5"
-              >
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-                </svg>
-                @magna_servicios_integrales
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-) : (
-  /* ==========================================
-     VARIANTE: DETAIL/CATALOGUE (3 Columnas)
-     ========================================== */
-  <section class={`py-12 ${bgClass} transition-colors duration-300`}>
-    <div class="container-main">
-      <!-- Encabezado de la Sección -->
-      <div class="text-center mb-10 max-w-2xl mx-auto flex flex-col items-center gap-2 animate-fadeInUp">
-        <h2 class="text-2xl sm:text-3xl font-bold font-serif text-brand-dark">
+<section class={`py-20 ${bgClass} transition-colors duration-300`}>
+  <div class="container-main max-w-5xl mx-auto">
+    
+    {variant === 'homepage' ? (
+      /* VARIANTE: HOMEPAGE (Diseño Editorial Centrado sin imágenes) */
+      <div class="flex flex-col items-center text-center gap-8 animate-fadeInUp">
+        <span class="text-[10px] font-bold text-brand-sage uppercase tracking-[0.2em]">
+          Solución Integral
+        </span>
+        <h2 class="text-4xl sm:text-5xl font-bold font-serif text-brand-dark leading-tight max-w-2xl">
           Magna Servicios Integrales
         </h2>
-        <div class="w-12 h-0.5 bg-brand-sage/40 rounded-full my-1"></div>
-        <p class="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">
-          {variant === 'detail' 
-            ? 'Acompañamos tu inversión con asesoramiento experto en cada etapa del proceso.'
-            : 'Más que una inmobiliaria, somos su socio estratégico en cada paso del proceso inmobiliario.'
-          }
+        <div class="w-16 h-px bg-brand-dark/20"></div>
+        <p class="text-sm sm:text-base text-brand-dark/80 leading-relaxed max-w-2xl font-medium">
+          Más que una inmobiliaria, somos tu aliado en el cuidado de tu propiedad. Ofrecemos servicios especializados de limpieza, mantenimiento y asesoría técnica para que no tengas que preocuparte por nada.
         </p>
+        
+        <!-- Lista de servicios tipográfica -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 my-4 text-xs font-bold uppercase tracking-widest text-brand-dark/60 border-y border-brand-dark/10 py-6 w-full">
+          <span class="hover:text-brand-sage transition-colors">Seguridad & Legal</span>
+          <span class="hidden sm:inline text-brand-sand">•</span>
+          <span class="hover:text-brand-sage transition-colors">Mantenimiento</span>
+          <span class="hidden sm:inline text-brand-sand">•</span>
+          <span class="hover:text-brand-sage transition-colors">Limpieza Profesional</span>
+        </div>
+
+        <a
+          href="https://wa.me/0000000000?text=Hola%2C%20quisiera%20solicitar%20un%20presupuesto%20para%20servicios%20de%20Magna%20Servicios%20Integrales."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-brand-dark text-brand-cream hover:bg-brand-sage text-xs font-bold uppercase tracking-widest transition-colors mt-2"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.739-1.446L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.42 9.863-9.864.002-2.637-1.03-5.114-2.905-6.99C16.556 1.878 14.079.847 11.442.845 6.008.845 1.585 5.26 1.581 10.7c-.001 1.745.453 3.447 1.317 4.962l-.999 3.648 3.748-.983-.001-.001zm11.366-6.196c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
+          </svg>
+          Solicitar Presupuesto
+        </a>
       </div>
-
-      <!-- Grilla Editorial de 3 Columnas -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Carta 1: Asesoría Legal -->
-        <div class="bg-white p-6 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-3 animate-fadeInUp delay-100">
-          <div class="w-10 h-10 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <h3 class="text-base sm:text-lg font-serif font-bold text-brand-dark">Asesoría Legal</h3>
-          <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
-            {variant === 'detail'
-              ? 'Garantizamos la transparencia jurídica en cada contrato y escritura, brindando seguridad total a compradores y vendedores.'
-              : 'Gestión completa de trámites legales, sucesiones y contratos con la máxima transparencia y seguridad jurídica.'
+    ) : (
+      /* VARIANTE: DETAIL/CATALOGUE (Lista tipográfica) */
+      <div class="flex flex-col items-center gap-12 animate-fadeInUp">
+        <div class="text-center max-w-2xl mx-auto flex flex-col items-center gap-4">
+          <h2 class="text-3xl font-bold font-serif text-brand-dark">
+            Magna Servicios Integrales
+          </h2>
+          <div class="w-12 h-px bg-brand-dark/20"></div>
+          <p class="text-sm text-brand-dark/70 leading-relaxed">
+            {variant === 'detail' 
+              ? 'Acompañamos tu inversión con asesoramiento experto en cada etapa del proceso.'
+              : 'Más que una inmobiliaria, somos su socio estratégico en cada paso del proceso inmobiliario.'
             }
           </p>
         </div>
 
-        <!-- Carta 2: Desarrollo & Obra / Arquitectura -->
-        <div class="bg-white p-6 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-3 animate-fadeInUp delay-200">
-          <div class="w-10 h-10 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full border-t border-brand-dark/10 pt-12">
+          <!-- Item 1 -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-brand-dark">Asesoría Legal</h3>
+            <p class="text-xs text-brand-dark/60 leading-relaxed">
+              {variant === 'detail'
+                ? 'Garantizamos la transparencia jurídica en cada contrato y escritura, brindando seguridad total.'
+                : 'Gestión completa de trámites legales, sucesiones y contratos con la máxima transparencia.'
+              }
+            </p>
           </div>
-          <h3 class="text-base sm:text-lg font-serif font-bold text-brand-dark">
-            {variant === 'detail' ? 'Desarrollo & Obra' : 'Arquitectura y Obra'}
-          </h3>
-          <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
-            {variant === 'detail'
-              ? 'Contamos con un equipo de arquitectos y constructores para remodelaciones o proyectos desde el pozo con altos estándares.'
-              : 'Desde remodelaciones parciales hasta proyectos llave en mano, transformamos espacios con diseño de vanguardia.'
-            }
-          </p>
-        </div>
 
-        <!-- Carta 3: Gestión Notarial / Servicios Notariales -->
-        <div class="bg-white p-6 rounded-2xl border border-brand-sand shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-3 animate-fadeInUp delay-300">
-          <div class="w-10 h-10 bg-brand-sage/10 rounded-full flex items-center justify-center text-brand-sage">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="16" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="4"/>
-              <line x1="8" y1="2" x2="8" y2="4"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
+          <!-- Item 2 -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-brand-dark">
+              {variant === 'detail' ? 'Desarrollo & Obra' : 'Arquitectura'}
+            </h3>
+            <p class="text-xs text-brand-dark/60 leading-relaxed">
+              {variant === 'detail'
+                ? 'Equipo de arquitectos y constructores para proyectos desde el pozo con altos estándares.'
+                : 'Desde remodelaciones parciales hasta proyectos llave en mano con diseño de vanguardia.'
+              }
+            </p>
           </div>
-          <h3 class="text-base sm:text-lg font-serif font-bold text-brand-dark">
-            {variant === 'detail' ? 'Gestión Notarial' : 'Servicios Notariales'}
-          </h3>
-          <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed">
-            {variant === 'detail'
-              ? 'Coordinación directa con escribanías de confianza para agilizar los procesos de transferencia y posesión inmediata.'
-              : 'Escribanía propia para agilizar escrituraciones y certificaciones, garantizando rapidez en sus transacciones.'
-            }
-          </p>
+
+          <!-- Item 3 -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-brand-dark">
+              {variant === 'detail' ? 'Gestión Notarial' : 'Servicios Notariales'}
+            </h3>
+            <p class="text-xs text-brand-dark/60 leading-relaxed">
+              {variant === 'detail'
+                ? 'Coordinación directa con escribanías de confianza para agilizar posesiones y escrituras.'
+                : 'Escribanía propia para agilizar certificaciones, garantizando rapidez en transacciones.'
+              }
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-)}
+    )}
+  </div>
+</section>

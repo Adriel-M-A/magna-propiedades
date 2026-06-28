@@ -1,79 +1,58 @@
 ---
-// Footer.astro - Premium Lightweight Beige Footer
+// Footer.astro - Premium Lightweight Warm Sand Footer (Diseño Tipográfico de Lujo)
 ---
 
-<footer class="bg-brand-sand border-t border-brand-sand/60 pt-12 pb-6 select-none mt-16">
+<footer class="bg-brand-sand border-t border-brand-sand pt-16 pb-8 select-none mt-20 text-brand-dark">
   <div class="container-main">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12">
       <!-- Columna 1: Logo & Propósito (5 cols en desktop) -->
       <div class="md:col-span-5 flex flex-col items-start gap-4 animate-fadeInUp">
-        <span class="font-serif text-lg sm:text-xl font-bold text-brand-dark tracking-wide">
-          Magna Propiedades
+        <span class="font-serif text-xl font-bold tracking-[0.25em] uppercase">
+          MAGNA
         </span>
-        <p class="text-xs sm:text-sm text-brand-dark/70 leading-relaxed max-w-sm">
+        <p class="text-xs text-brand-dark/70 leading-relaxed max-w-xs font-medium">
           Curaduría de propiedades exclusivas y servicios inmobiliarios integrales. Acompañamos tu inversión con asesoramiento profesional de alta gama en cada etapa.
         </p>
       </div>
 
       <!-- Columna 2: Navegación (3 cols en desktop) -->
-      <div class="md:col-span-3 flex flex-col gap-3 animate-fadeInUp delay-100">
-        <h3 class="text-[10px] font-bold text-brand-sage uppercase tracking-wider">
+      <div class="md:col-span-3 flex flex-col gap-4 animate-fadeInUp delay-100">
+        <h3 class="text-[10px] font-bold text-brand-sage uppercase tracking-[0.2em]">
           Navegación
         </h3>
-        <ul class="flex flex-col gap-2">
-          <li><a href="/" class="text-xs text-brand-dark/85 hover:text-brand-sage transition-colors font-medium">Inicio</a></li>
-          <li><a href="/catalogo" class="text-xs text-brand-dark/85 hover:text-brand-sage transition-colors font-medium">Catálogo</a></li>
-          <li><a href="/#servicios" class="text-xs text-brand-dark/85 hover:text-brand-sage transition-colors font-medium">Servicios</a></li>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="/" class="text-xs text-brand-dark/80 hover:text-brand-sage transition-colors font-semibold uppercase tracking-wider">Inicio</a></li>
+          <li><a href="/catalogo" class="text-xs text-brand-dark/80 hover:text-brand-sage transition-colors font-semibold uppercase tracking-wider">Catálogo</a></li>
+          <li><a href="/#servicios" class="text-xs text-brand-dark/80 hover:text-brand-sage transition-colors font-semibold uppercase tracking-wider">Servicios</a></li>
         </ul>
       </div>
 
-      <!-- Columna 3: Legal (4 cols en desktop) -->
-      <div class="md:col-span-4 flex flex-col gap-3 animate-fadeInUp delay-200">
-        <h3 class="text-[10px] font-bold text-brand-sage uppercase tracking-wider">
-          Legal
+      <!-- Columna 3: Información & Contacto (4 cols en desktop) -->
+      <div class="md:col-span-4 flex flex-col gap-4 animate-fadeInUp delay-200">
+        <h3 class="text-[10px] font-bold text-brand-sage uppercase tracking-[0.2em]">
+          Contacto
         </h3>
-        <ul class="flex flex-col gap-2">
-          <li><a href="/privacidad" class="text-xs text-brand-dark/85 hover:text-brand-sage transition-colors font-medium">Privacidad</a></li>
-          <li><a href="/terminos" class="text-xs text-brand-dark/85 hover:text-brand-sage transition-colors font-medium">Términos y Condiciones</a></li>
-          <li><span class="text-xs text-brand-dark/85 font-medium">Oficina: San Martín 308, Trelew</span></li>
+        <ul class="flex flex-col gap-2.5 text-xs text-brand-dark/80 font-medium">
+          <li>Oficina: San Martín 308, Trelew</li>
+          <li>
+            <a href="https://instagram.com/magnapropiedades.tw" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors font-semibold uppercase tracking-wider">
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a href="https://facebook.com/magna.propiedad" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors font-semibold uppercase tracking-wider">
+              Facebook
+            </a>
+          </li>
         </ul>
       </div>
     </div>
 
-    <!-- Barra Inferior de Copyright y Redes -->
-    <div class="border-t border-brand-dark/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p class="text-[10px] sm:text-xs text-brand-dark/65 font-medium">
+    <!-- Barra Inferior de Copyright -->
+    <div class="border-t border-brand-dark/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-[10px] text-brand-dark/60 font-semibold tracking-wider uppercase">
         &copy; {new Date().getFullYear()} Magna Propiedades. Todos los derechos reservados.
       </p>
-
-      <!-- Redes e Iconos Sociales -->
-      <div class="flex items-center gap-4 animate-fadeIn">
-        <a 
-          href="https://instagram.com/magnapropiedades.tw" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="w-8 h-8 rounded-full border border-brand-dark/10 hover:border-brand-sage hover:bg-white text-brand-dark hover:text-brand-sage flex items-center justify-center transition-all"
-          aria-label="Instagram Magna Propiedades"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-          </svg>
-        </a>
-        
-        <a 
-          href="https://facebook.com/magna.propiedad" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="w-8 h-8 rounded-full border border-brand-dark/10 hover:border-brand-sage hover:bg-white text-brand-dark hover:text-brand-sage flex items-center justify-center transition-all"
-          aria-label="Facebook Magna Propiedades"
-        >
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-          </svg>
-        </a>
-      </div>
     </div>
   </div>
 </footer>

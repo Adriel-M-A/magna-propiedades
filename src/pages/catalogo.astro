@@ -22,42 +22,47 @@ const propiedades: Propiedad[] = (propiedadesRaw as Propiedad[])
   <!-- Cabecera Sticky Glassmorphic -->
   <Header />
 
-  <main class="py-12 bg-brand-cream/10">
-    <div class="container-main flex flex-col gap-8">
+  <main class="py-16 bg-brand-cream/10">
+    <div class="container-main flex flex-col gap-10">
       
-      <!-- Título de Sección de Lujo (Fiel al Mockup 2) -->
-      <div class="flex flex-col gap-3 animate-fadeInUp">
-        <h1 class="text-3xl sm:text-4.5xl font-bold font-serif text-brand-dark leading-tight">
+      <!-- Título de Sección de Lujo -->
+      <div class="mb-4 reveal">
+        <span class="text-[10px] font-bold text-brand-sage uppercase tracking-[0.25em]">
+          Propiedades Disponibles
+        </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif text-brand-dark leading-tight mt-2">
           Nuestro Catálogo
         </h1>
-        <p class="text-xs sm:text-sm text-brand-dark/70 max-w-xl leading-relaxed">
+        <p class="text-xs sm:text-sm text-brand-dark/70 max-w-xl leading-relaxed mt-3">
           Descubra una colección curada de propiedades exclusivas diseñadas para elevar su estilo de vida y potenciar sus inversiones comerciales en la región.
         </p>
       </div>
 
       <!-- Barra de Filtros Avanzados (Min/Max + Selectores) -->
-      <FilterBar />
+      <div class="reveal">
+        <FilterBar />
+      </div>
 
       <!-- Contador de Resultados Dinámico -->
-      <div class="text-xs text-brand-dark/50 font-semibold select-none animate-fadeIn pl-1" id="results-count" aria-live="polite">
+      <div class="text-xs text-brand-dark/50 font-semibold select-none reveal pl-1" id="results-count" aria-live="polite">
         Mostrando <span id="results-number" class="text-brand-sage font-bold">{propiedades.length}</span> propiedades en catálogo
       </div>
 
-      <!-- Grilla de Propiedades Core (1 col en móvil, 3 o 4 en escritorio) -->
+      <!-- Grilla de Propiedades Core (1 col en móvil, 3 en escritorio, gap amplio) -->
       <div 
         id="catalog-grid" 
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fadeInUp delay-100"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 reveal"
         aria-label="Listado de propiedades"
       >
         {propiedades.map((p, i) => (
-          <PropertyCard propiedad={p} index={i} />
+          <PropertyCard propiedad={p} index={i} variant="catalog" />
         ))}
       </div>
 
       <!-- Estado: Sin Resultados -->
       <div 
         id="no-results-state" 
-        class="hidden flex-col items-center justify-center text-center py-16 px-4 bg-white border border-dashed border-brand-sand rounded-2xl gap-4 select-none max-w-md mx-auto w-full animate-fadeIn"
+        class="hidden flex-col items-center justify-center text-center py-16 px-4 bg-white border border-brand-sand rounded-none gap-4 select-none max-w-md mx-auto w-full reveal"
         aria-live="polite"
       >
         <svg class="w-12 h-12 text-brand-sage opacity-50 stroke-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -73,27 +78,21 @@ const propiedades: Propiedad[] = (propiedadesRaw as Propiedad[])
         <button 
           id="btn-limpiar-filtros"
           type="button" 
-          class="btn btn-outline py-2 px-5 text-xs font-bold uppercase tracking-wider rounded-lg border border-brand-sand text-brand-dark hover:bg-brand-sand transition-all cursor-pointer"
+          class="btn btn-outline py-2.5 px-6"
         >
           Limpiar Filtros
         </button>
       </div>
 
-      <!-- Botón Táctil: Cargar Más Propiedades (Visual Fiel a Mockup 2) -->
-      <div class="flex flex-col items-center gap-2 mt-4 select-none animate-fadeInUp delay-200">
-        <span class="text-[10px] font-bold text-brand-sage uppercase tracking-widest">
-          Cargar Más Propiedades
-        </span>
+      <!-- Botón Táctil: Cargar Más Propiedades (Visual Rectangular Minimalista) -->
+      <div class="flex flex-col items-center gap-4 mt-8 select-none reveal">
         <button 
           id="btn-cargar-mas"
           type="button"
-          class="w-10 h-10 rounded-full border border-brand-sand hover:border-brand-sage hover:bg-white text-brand-dark hover:text-brand-sage flex items-center justify-center shadow-sm cursor-pointer transition-all bg-brand-cream/50"
+          class="btn btn-outline px-8 py-3"
           aria-label="Cargar más inmuebles en la vista"
         >
-          <svg class="w-4 h-4 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" x2="12" y1="5" y2="19"/>
-            <polyline points="19 12 12 19 5 12"/>
-          </svg>
+          Cargar Más Propiedades
         </button>
       </div>
 

@@ -2,10 +2,10 @@
 
 @theme {
   /* Colores Oficiales Premium Magna */
-  --color-brand-cream: #fdfcf9; /* Base UI / Surface */
-  --color-brand-sage: #506356;  /* Accent Primary / Soft Sage */
-  --color-brand-sand: #f2ede4;  /* Secondary Container & Borders / Warm Sand */
-  --color-brand-dark: #0a2013;  /* Typography & Contrast / Dark Olive */
+  --color-brand-cream: #FAF9F6; /* Base UI / Surface / Off-White */
+  --color-brand-sage: #1f3d2d;  /* Accent Primary / Verde Fuerte */
+  --color-brand-sand: #E4DDD5;  /* Secondary Container & Borders / Beige Crema */
+  --color-brand-dark: #12241b;  /* Typography & Contrast / Forest Black */
   --color-whatsapp: #25d366;    /* Critical Action / WhatsApp Green */
   --color-whatsapp-hover: #1da851;
 
@@ -103,6 +103,24 @@ h1, h2, h3, h4, .font-serif-brand {
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 
+/* Scroll Reveal: Activado por Intersection Observer */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variante con delay para elementos en grilla */
+.reveal.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal.reveal-delay-3 { transition-delay: 0.3s; }
+
 /* ============================================================
    BADGES (Etiquetas de estado)
    ============================================================ */
@@ -136,20 +154,22 @@ h1, h2, h3, h4, .font-serif-brand {
 }
 
 /* ============================================================
-   BOTONES E INTERACCIONES (Efectos táctiles suaves)
+   BOTONES E INTERACCIONES (Efectos táctiles suaves y diseño rectangular de lujo)
    ============================================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-lg);
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 0px; /* Rectangulares para estilo arquitectónico y de lujo */
+  font-weight: 700;
+  font-size: 0.75rem; /* Tamaño reducido elegante */
+  text-transform: uppercase; /* Mayúsculas sostenidas */
+  letter-spacing: 0.15em; /* Tracking amplio */
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: none;
+  border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -157,46 +177,52 @@ h1, h2, h3, h4, .font-serif-brand {
 .btn-primary {
   background-color: var(--color-brand-sage);
   color: var(--color-brand-cream);
+  border-color: var(--color-brand-sage);
 }
 
 .btn-primary:hover {
   background-color: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(10, 32, 19, 0.15);
+  box-shadow: 0 4px 12px rgba(10, 32, 19, 0.12);
 }
 
 .btn-whatsapp {
-  background-color: var(--color-whatsapp);
-  color: white;
+  background-color: var(--color-brand-dark); /* Color integrado estéticamente */
+  color: var(--color-brand-cream);
+  border-color: var(--color-brand-dark);
 }
 
 .btn-whatsapp:hover {
-  background-color: var(--color-whatsapp-hover);
+  background-color: var(--color-brand-sage);
+  border-color: var(--color-brand-sage);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 12px rgba(10, 32, 19, 0.12);
 }
 
 .btn-outline {
   background-color: transparent;
   color: var(--color-brand-dark);
-  border: 1px solid var(--color-brand-sand);
+  border-color: var(--color-brand-sand);
 }
 
 .btn-outline:hover {
   background-color: var(--color-brand-sand);
-  border-color: var(--color-brand-sage);
+  border-color: var(--color-brand-dark);
   color: var(--color-brand-dark);
 }
 
 .btn-dark {
   background-color: var(--color-brand-dark);
   color: var(--color-brand-cream);
+  border-color: var(--color-brand-dark);
 }
 
 .btn-dark:hover {
   background-color: var(--color-brand-sage);
+  border-color: var(--color-brand-sage);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(10, 32, 19, 0.2);
+  box-shadow: 0 4px 12px rgba(10, 32, 19, 0.12);
 }
 
 /* ============================================================

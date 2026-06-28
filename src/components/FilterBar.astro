@@ -1,9 +1,8 @@
 ---
-// FilterBar.astro - Componente premium para filtrar propiedades en la página del catálogo con dropdowns personalizados
+// FilterBar.astro — Estética editorial: labels flotantes, selects con underline, botón dark
 import propiedadesRaw from '../data/propiedades.json';
 import CustomSelect from './CustomSelect.astro';
 
-// Obtener ciudades únicas
 const ciudades = [...new Set(propiedadesRaw.filter(p => p.disponible).map(p => p.ciudad))].sort();
 
 const opcionesOperacion = [
@@ -20,46 +19,50 @@ const opcionesTipo = [
 const opcionesCiudad = ciudades.map(c => ({ value: c, label: c }));
 ---
 
-<div class="w-full bg-white border border-brand-sand rounded-2xl p-4 md:p-3 shadow-sm flex flex-col md:flex-row items-stretch md:items-center gap-3 select-none animate-fadeInUp z-20">
+<div class="flex flex-col md:flex-row items-stretch md:items-end gap-5 md:gap-0 select-none">
+
   <!-- Operación -->
-  <div class="flex-1 flex flex-col gap-0.5 border-b md:border-b-0 md:border-r border-brand-sand pb-3 md:pb-0 md:pr-3">
-    <CustomSelect 
-      id="filtro-operacion" 
-      label="Operación" 
-      placeholder="Todas" 
-      options={opcionesOperacion} 
+  <div class="flex-1 flex flex-col border-b border-brand-dark/20 pb-3 md:pr-8">
+    <CustomSelect
+      id="filtro-operacion"
+      label="Operación"
+      placeholder="Todas"
+      options={opcionesOperacion}
     />
   </div>
 
-  <!-- Tipo de Inmueble -->
-  <div class="flex-1 flex flex-col gap-0.5 border-b md:border-b-0 md:border-r border-brand-sand pb-3 md:pb-0 md:px-3">
-    <CustomSelect 
-      id="filtro-tipo" 
-      label="Tipo" 
-      placeholder="Todos los Tipos" 
-      options={opcionesTipo} 
+  <!-- Tipo de Propiedad -->
+  <div class="flex-1 flex flex-col border-b border-brand-dark/20 pb-3 md:px-8">
+    <CustomSelect
+      id="filtro-tipo"
+      label="Tipo de Propiedad"
+      placeholder="Todos"
+      options={opcionesTipo}
     />
   </div>
 
-  <!-- Ciudad -->
-  <div class="flex-1 flex flex-col gap-0.5 border-b md:border-b-0 border-brand-sand pb-3 md:pb-0 md:px-3">
-    <CustomSelect 
-      id="filtro-ciudad" 
-      label="Ciudad" 
-      placeholder="Todas las Ciudades" 
-      options={opcionesCiudad} 
+  <!-- Ubicación -->
+  <div class="flex-1 flex flex-col border-b border-brand-dark/20 pb-3 md:px-8">
+    <CustomSelect
+      id="filtro-ciudad"
+      label="Ubicación"
+      placeholder="Todas las Ciudades"
+      options={opcionesCiudad}
     />
   </div>
 
-  <!-- Botón de Filtrar -->
-  <button 
+  <!-- Botón Aplicar Filtros (Dark, rectangular) -->
+  <button
     id="filtro-buscar-btn"
     type="button"
-    class="btn btn-primary bg-brand-sage hover:bg-brand-dark text-white rounded-xl md:rounded-lg py-2.5 px-6 flex items-center justify-center gap-2 cursor-pointer font-bold text-xs uppercase tracking-wider transition-all md:self-center"
+    class="btn btn-dark py-4 px-8 flex items-center justify-center gap-2.5 cursor-pointer md:ml-8 mt-4 md:mt-0 whitespace-nowrap"
   >
-    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" x2="20" y1="6" y2="6"/>
+      <line x1="8" x2="16" y1="12" y2="12"/>
+      <line x1="12" x2="12" y1="18" y2="18"/>
     </svg>
-    Filtrar
+    Aplicar Filtros
   </button>
+
 </div>

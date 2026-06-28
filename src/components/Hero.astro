@@ -1,9 +1,8 @@
 ---
-// Hero.astro - Componente premium para la sección principal de la página de inicio con buscador personalizado
-import propiedadesRaw from '../data/propiedades.json';
+// Hero.astro - Componente premium para la sección principal de la página de inicio con buscador personalizado (Diseño Tipográfico sin Imágenes)
 import CustomSelect from './CustomSelect.astro';
+import propiedadesRaw from '../data/propiedades.json';
 
-// Extraer ciudades únicas de las propiedades disponibles
 const ciudades = [...new Set(propiedadesRaw.filter(p => p.disponible).map(p => p.ciudad))].sort();
 
 const opcionesOperacion = [
@@ -20,75 +19,40 @@ const opcionesTipo = [
 const opcionesCiudad = ciudades.map(c => ({ value: c, label: c }));
 ---
 
-<div class="relative w-full h-[550px] md:h-[650px] flex items-center justify-center overflow-hidden bg-brand-dark select-none">
-  <!-- Fondo con imagen premium y gradiente -->
-  <div class="absolute inset-0 z-0">
-    <div class="absolute inset-0 bg-brand-dark/25 z-10"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-brand-cream to-transparent z-15"></div>
-    <img 
-      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=cover&w=1920&q=80" 
-      alt="Sala de estar moderna y premium de Magna Propiedades" 
-      class="w-full h-full object-cover animate-fadeIn"
-      loading="eager"
-    />
-  </div>
-
-  <!-- Contenido de la Tarjeta Flotante Central -->
-  <div class="relative z-20 container-main flex flex-col items-center w-full px-4">
-    <div class="bg-white/80 backdrop-blur-xl border border-white/60 p-8 sm:p-10 rounded-2xl shadow-xl text-center max-w-xl animate-fadeInUp flex flex-col items-center gap-4">
-      <h1 class="text-3xl sm:text-4.5xl font-bold font-serif text-brand-dark leading-tight">
-        Tu próximo hogar comienza aquí
+<div class="relative w-full min-h-[550px] md:min-h-[650px] flex items-center justify-center bg-brand-cream select-none px-4 py-20">
+  
+  <div class="relative z-20 flex flex-col items-center w-full max-w-4xl mx-auto gap-8 md:gap-12">
+    <!-- Título principal tipográfico -->
+    <div class="text-center animate-fadeInUp flex flex-col items-center gap-6">
+      <span class="inline-block text-xs md:text-sm font-bold text-brand-sage uppercase tracking-[0.2em]">
+        Inmobiliaria Exclusiva
+      </span>
+      <h1 class="text-5xl md:text-7xl font-bold font-serif text-brand-dark leading-none tracking-tight uppercase">
+        Magna
       </h1>
-      <p class="text-xs sm:text-sm text-brand-dark/75 leading-relaxed max-w-md">
-        Líderes en servicios inmobiliarios en Trelew y la región. Descubra propiedades exclusivas curadas con el más alto estándar.
+      <div class="w-16 h-px bg-brand-dark/20"></div>
+      <p class="text-sm md:text-base text-brand-dark/70 leading-relaxed max-w-lg font-medium">
+        Líderes en servicios inmobiliarios en Trelew y la región. Descubra propiedades exclusivas curadas con el más alto estándar de excelencia.
       </p>
-      <a 
-        href="/catalogo" 
-        class="btn btn-primary px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-sage hover:bg-brand-dark text-white transition-all shadow-sm"
-      >
-        Ver Catálogo
-      </a>
     </div>
 
-    <!-- Barra de búsqueda rápida flotante (Borde inferior de Hero) -->
-    <div class="w-full max-w-3.5xl bg-white rounded-2xl md:rounded-full border border-brand-sand p-4 md:p-2.5 shadow-lg flex flex-col md:flex-row items-stretch md:items-center gap-3 mt-10 md:mt-12 animate-fadeInUp delay-200 z-20">
-      <!-- Operación -->
-      <div class="flex-1 flex flex-col px-3 gap-0.5 border-b md:border-b-0 md:border-r border-brand-sand pb-2 md:pb-0">
-        <CustomSelect 
-          id="hero-operacion" 
-          label="Operación" 
-          placeholder="Todas" 
-          options={opcionesOperacion} 
-        />
+    <!-- Buscador Integrado -->
+    <div class="w-full bg-white rounded-none border border-brand-sand p-4 md:p-3 shadow-sm flex flex-col md:flex-row items-stretch md:items-center gap-3 animate-fadeInUp delay-200">
+      
+      <div class="flex-1 flex flex-col px-4 gap-1 border-b md:border-b-0 md:border-r border-brand-sand pb-3 md:pb-0">
+        <CustomSelect id="hero-operacion" label="Operación" placeholder="Todas" options={opcionesOperacion} />
       </div>
 
-      <!-- Tipo de Inmueble -->
-      <div class="flex-1 flex flex-col px-3 gap-0.5 border-b md:border-b-0 md:border-r border-brand-sand pb-2 md:pb-0">
-        <CustomSelect 
-          id="hero-tipo" 
-          label="Tipo de Inmueble" 
-          placeholder="Todos los Tipos" 
-          options={opcionesTipo} 
-        />
+      <div class="flex-1 flex flex-col px-4 gap-1 border-b md:border-b-0 md:border-r border-brand-sand pb-3 md:pb-0">
+        <CustomSelect id="hero-tipo" label="Inmueble" placeholder="Todos los Tipos" options={opcionesTipo} />
       </div>
 
-      <!-- Ciudad -->
-      <div class="flex-1 flex flex-col px-3 gap-0.5 pb-2 md:pb-0">
-        <CustomSelect 
-          id="hero-ciudad" 
-          label="Ciudad" 
-          placeholder="Todas las Ciudades" 
-          options={opcionesCiudad} 
-        />
+      <div class="flex-1 flex flex-col px-4 gap-1 pb-3 md:pb-0">
+        <CustomSelect id="hero-ciudad" label="Ciudad" placeholder="Todas las Ciudades" options={opcionesCiudad} />
       </div>
 
-      <!-- Botón de Búsqueda -->
-      <button 
-        id="hero-buscar-btn"
-        type="button"
-        class="btn btn-primary bg-brand-sage hover:bg-brand-dark text-white rounded-xl md:rounded-full py-3 md:py-3.5 px-6 flex items-center justify-center gap-2 cursor-pointer font-bold text-xs uppercase tracking-wider transition-all"
-      >
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <button id="hero-buscar-btn" type="button" class="btn btn-dark w-full md:w-auto py-4 md:py-3 px-8 flex items-center justify-center gap-2 cursor-pointer">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/>
           <line x1="21" x2="16.65" y1="21" y2="16.65"/>
         </svg>
@@ -105,7 +69,6 @@ const opcionesCiudad = ciudades.map(c => ({ value: c, label: c }));
     const tipo = (document.getElementById('hero-tipo') as HTMLInputElement).value;
     const ciudad = (document.getElementById('hero-ciudad') as HTMLInputElement).value;
     
-    // Armar los parámetros y redirigir al catálogo
     const params = new URLSearchParams();
     if (op) params.append('operacion', op);
     if (tipo) params.append('tipo', tipo);
